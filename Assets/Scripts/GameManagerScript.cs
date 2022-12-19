@@ -4,15 +4,18 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(ProcessInput))]
+[RequireComponent(typeof(EntityController))]
 public class GameManagerScript : MonoBehaviour
 {
     PlayerController playerController;
     ProcessInput inputController;
-    // Start is called before the first frame update
+    EntityController entityController;
+
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
         inputController = GetComponent<ProcessInput>(); 
+        entityController = GetComponent<EntityController>();
     }
 
     // Update is called once per frame
@@ -26,5 +29,6 @@ public class GameManagerScript : MonoBehaviour
         {
             playerController.SetSwingDown();
         }
+        entityController.UpdateEntities();
     }
 }
