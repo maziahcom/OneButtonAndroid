@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{8510094A-6B6C-AF3A-E21C-EEE3724F3216}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -58,7 +59,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ProcessInput.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityController.cs" />
-    <Compile Include="Assets\Scripts\Entities\BlueCubeEntity.cs" />
+    <Compile Include="Assets\Scripts\Entities\CubeEntity.cs" />
     <Compile Include="Assets\Scripts\GameManagerScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
   </ItemGroup>
