@@ -3,41 +3,38 @@ using System.Collections.Generic;
 //using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static PlayerController;
 using static UnityEngine.Rendering.DebugUI;
+
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject PlayerObject;
-    private bool isActive;
     public float angleDown = 34.0f;
     public float angleUp = -34.0f;
-    private float dx;
     public int rotationSpeed = 50;
     private float r;
-    // Start is called before the first frame update
-    void Start()
+    SwingState swingState;
+
+    public void InitPlayer()
     {
         Assert.IsNotNull(PlayerObject, "Error: Add a PlayerObject to the PlayerController script");
-        isActive = false;
-        dx = 0;
+        swingState = new SwingState();
     }
 
-    public void SetSwingUp()
+    public void ButtonWasPressed()
     {
-        isActive = true;
-        dx = -1;
-
+        swingState.SetState(SwingState.State.ASCENDING);
     }
-    public void SetSwingDown()
+    public void ButtonWasReleased()
     {
-        isActive = true;
-        dx = 1;
+        swingState.SetState(SwingState.State.DESCENDING);
     }
 
     // Update is called once per frame
-    void Update()
+    public void UpdatePlayer()
     {
-        if(isActive)
+        if(swingState.GetState() != SwingState.State.STATIC)
         {
             //use r to hold a rotation value matching the format in the editor
             r = PlayerObject.transform.localEulerAngles.z;
@@ -46,21 +43,55 @@ public class PlayerController : MonoBehaviour
             else if (r < -180)
                 r += 360f;
             
-            if (dx == -1)
+            if (swingState.GetState() == SwingState.State.ASCENDING)
             {
                 if (r > angleUp)
-                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * dx, Space.Self);
+                {
+                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * swingState.GetDirectionMultiplier(), Space.Self);
+                }
                 else
-                    isActive = false;               
+                {
+                    swingState.SetState(SwingState.State.STATIC);
+                }
             }
 
-            else if(dx == 1)
+            else if(swingState.GetState() == SwingState.State.DESCENDING)
             {
                 if (r < angleDown)
-                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * dx, Space.Self);
+                {
+                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * swingState.GetDirectionMultiplier(), Space.Self);
+                }
                 else
-                    isActive = false;
+                {
+                    swingState.SetState(SwingState.State.STATIC);
+                }
             }
+        }
+    }
+
+    public class SwingState
+    {
+        public enum State { DESCENDING, ASCENDING, STATIC };
+        private State state;
+        public SwingState()
+        {
+            state = State.STATIC;
+        }
+        public void SetState(State s)
+        {
+            state = s;
+        }
+        public State GetState()
+        {
+            return state;
+        }
+        public int GetDirectionMultiplier()
+        {
+            if(state == State.DESCENDING)
+                return 1;
+            if(state == State.ASCENDING)
+                return -1;
+            return 0;
         }
     }
 }

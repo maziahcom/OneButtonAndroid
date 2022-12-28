@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using static UnityEngine.EventSystems.EventTrigger;
+using Random = System.Random;
 
 [RequireComponent(typeof(CubeEntity))]
 public class EntityController : MonoBehaviour
@@ -13,13 +14,19 @@ public class EntityController : MonoBehaviour
     public float secondsDelay = 1.0f;
     private Vector3 dx;
     const int max_entities = 50;
-
+    private Random random = new Random();
     Entities entities;
-    void Start()
+    private const float yUp = 2.9f;
+    private const float yDown = -0.75f;
+    public Material cube_material;
+    public string ParamNameDisolve = "change this to your material/shader reference for disolve";
+    public void InitEntities()
     {
-        Debug.Log("Entity controller started");
+        //----------- Log ------------//
+        //Debug.Log("Entity controller started");
+        //-----------     ------------//
         entities = new Entities(max_entities);
-        switch(axis)
+        switch (axis)
         {
             case Axis.X:
                 dx = Vector3.left;
@@ -41,32 +48,41 @@ public class EntityController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(secondsDelay);
-            Debug.Log("Timer tick");
             timeCount();
+            //----------- Log ------------//
+            //Debug.Log("Timer tick");
+            //----------------------------//
         }
     }
     void timeCount()
     {
-        Debug.Log("Creating entity");
-
-        int id = entities.CreateEntity();
+        int id = entities.CreateEntity(cube_material);
         if (id >= 0)
-            entities.PositionEntity(id, new Vector3(0, 0, 20));
-        Debug.Log("Creating entity return value: " + id.ToString());
+        {
+            entities.PositionEntity(id, GenerateNextPosition());
+        }
+        //----------- Log ------------//
+        //Debug.Log("Creating entity return value: " + id.ToString());
+        //----------------------------//
+    }
+    Vector3 GenerateNextPosition()
+    {
+        float yRange = yUp - yDown;
+        int yRangeInt = (int)(yRange * 100);
+        int r = random.Next(0,yRangeInt);
+        float f = (r / 100.0f) + yDown;
+        return new Vector3(0, f, 20);
     }
     public void UpdateEntities()
     {
-        for(int i = 0; i < entities.GetCount(); i++)
-        {
-            entities.MoveEntity(i, dx * movementSpeed * Time.deltaTime);
-        }
+        entities.MoveEntities(dx * movementSpeed * Time.deltaTime);
     }
 
-    public class Entities
+    private class Entities
     {
         private int max_entities;
         private int count_entities;
-        List<CubeEntity.Entity> entitieList = new List<CubeEntity.Entity>();
+        List<CubeEntity> entitieList = new List<CubeEntity>();
         public Entities(int capacity)
         {
             max_entities = capacity;
@@ -74,16 +90,21 @@ public class EntityController : MonoBehaviour
 
         }
 
-        public int CreateEntity()
+        public int CreateEntity(Material m)
         {
             if (count_entities < max_entities)
             {
                 int nextID = GetNextAvailableID();
                 if (nextID < 0)
                     return nextID;
-                entitieList.Insert(nextID, new CubeEntity.Entity(nextID));
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.GetComponent<MeshRenderer>().material = m;
+                entitieList.Insert(nextID, cube.AddComponent<CubeEntity>());
+                entitieList[nextID].NewEntity(nextID);
                 count_entities++;
-                Debug.Log("Entity Count = " + count_entities);
+                //----------- Log ------------//
+                //Debug.Log("Entity Count = " + count_entities);
+                //----------------------------//
                 return nextID;
             }
             return -1;
@@ -109,14 +130,30 @@ public class EntityController : MonoBehaviour
             entitieList[id].Move(dx);
             if (entitieList[id].GetPosition().z < -20)
                 DeleteEntity(id);
+            if(entitieList[id].GetIsDead())
+                DeleteEntity(id);
+        }
+        public void MoveEntities(Vector3 dx)
+        {
+            for(int i = entitieList.Count - 1; i >= 0; i--)
+            {
+                entitieList[i].Move(dx);
+                if (entitieList[i].GetPosition().z < -20)
+                    DeleteEntity(i);
+                else if (entitieList[i].GetIsDead())
+                    DeleteEntity(i);
+            }
         }
 
         public int GetNextAvailableID()
         {
+            //--------comment---------------//
+            //iterate through entities, setting flag to false, and returning when GetID returns no ID (ie, we found free slot)
+            //------------------------------//
             for (int i = 0; i < max_entities; i++)
             {
                 bool set = false;
-                foreach (CubeEntity.Entity entitie in entitieList)
+                foreach (CubeEntity entitie in entitieList)
                 {
                     if (entitie.GetID() == i)
                         set = true;
@@ -126,7 +163,6 @@ public class EntityController : MonoBehaviour
             }
             return -2;
         }
-
     }
 
 }

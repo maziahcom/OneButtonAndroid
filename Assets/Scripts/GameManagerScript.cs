@@ -3,32 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-[RequireComponent(typeof(ProcessInput))]
+[RequireComponent(typeof(InputController))]
 [RequireComponent(typeof(EntityController))]
+[RequireComponent(typeof(EnvironmentController))]
 public class GameManagerScript : MonoBehaviour
 {
     PlayerController playerController;
-    ProcessInput inputController;
+    InputController inputController;
     EntityController entityController;
-
+    EnvironmentController environmentController;
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
-        inputController = GetComponent<ProcessInput>(); 
+        inputController = GetComponent<InputController>(); 
         entityController = GetComponent<EntityController>();
+        environmentController = GetComponent<EnvironmentController>();
+    }
+    void Start()
+    {
+        environmentController.InitMaterials();
+        entityController.InitEntities();
+        inputController.InitInputs();
+        playerController.InitPlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
+        inputController.UpdateInputs();
         if(inputController.GetSpacePressedThisFrame())
         {
-            playerController.SetSwingUp();
+            playerController.ButtonWasPressed();
         }
         if (inputController.GetSpaceReleasedThisFrame())
         {
-            playerController.SetSwingDown();
+            playerController.ButtonWasReleased();
         }
         entityController.UpdateEntities();
+        playerController.UpdatePlayer();
+    }
+    private void FixedUpdate()
+    {
+        //entityController.UpdateEntities();
+        //playerController.UpdatePlayer();
     }
 }
