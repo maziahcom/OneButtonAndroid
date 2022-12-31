@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,14 +13,17 @@ public class EntityController : MonoBehaviour
     public Axis axis = Axis.Z;
     public float movementSpeed = 10.0f;
     public float secondsDelay = 1.0f;
-    private Vector3 dx;
-    const int max_entities = 50;
-    private Random random = new Random();
-    Entities entities;
-    private const float yUp = 2.9f;
-    private const float yDown = -0.75f;
     public Material cube_material;
     public string ParamNameDisolve = "change this to your material/shader reference for disolve";
+    //public AudioSource hitSound1;
+
+    private Vector3 dx;
+    private const int max_entities = 50;
+    private Random random = new Random();
+    private Entities entities;
+    private const float yUp = 2.9f;
+    private const float yDown = -0.75f;
+
     public void InitEntities()
     {
         //----------- Log ------------//
@@ -47,7 +51,7 @@ public class EntityController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(secondsDelay);
+            yield return new WaitForSeconds(secondsDelay - (float)random.NextDouble());
             timeCount();
             //----------- Log ------------//
             //Debug.Log("Timer tick");
@@ -75,33 +79,32 @@ public class EntityController : MonoBehaviour
     }
     public void UpdateEntities()
     {
-        entities.MoveEntities(dx * movementSpeed * Time.deltaTime);
+        entities.MoveEntities(movementSpeed * Time.deltaTime * dx);
+        //movementSpeed += (Time.deltaTime/5);
     }
 
     private class Entities
     {
         private int max_entities;
-        private int count_entities;
         List<CubeEntity> entitieList = new List<CubeEntity>();
         public Entities(int capacity)
         {
             max_entities = capacity;
-            count_entities = 0;
-
         }
 
         public int CreateEntity(Material m)
         {
-            if (count_entities < max_entities)
+            if (entitieList.Count < max_entities)
             {
                 int nextID = GetNextAvailableID();
                 if (nextID < 0)
                     return nextID;
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.GetComponent<MeshRenderer>().material = m;
+                //cube.AddComponent<AudioSource>();
+                //cube.GetComponent<AudioSource>().clip = a.clip;
                 entitieList.Insert(nextID, cube.AddComponent<CubeEntity>());
                 entitieList[nextID].NewEntity(nextID);
-                count_entities++;
                 //----------- Log ------------//
                 //Debug.Log("Entity Count = " + count_entities);
                 //----------------------------//
@@ -113,7 +116,6 @@ public class EntityController : MonoBehaviour
         {
             entitieList[id].Destroy();
             entitieList.RemoveAt(id);
-            count_entities--;
         }
         public int GetCount()
         {
@@ -125,14 +127,6 @@ public class EntityController : MonoBehaviour
             entitieList[id].SetPosition(pos);
         }
 
-        public void MoveEntity(int id, Vector3 dx)
-        {
-            entitieList[id].Move(dx);
-            if (entitieList[id].GetPosition().z < -20)
-                DeleteEntity(id);
-            if(entitieList[id].GetIsDead())
-                DeleteEntity(id);
-        }
         public void MoveEntities(Vector3 dx)
         {
             for(int i = entitieList.Count - 1; i >= 0; i--)
