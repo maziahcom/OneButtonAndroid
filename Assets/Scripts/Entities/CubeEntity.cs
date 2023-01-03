@@ -31,7 +31,6 @@ public class CubeEntity : MonoBehaviour
         Down,
         None
     }
-    HitDir hitDir;
 
     public void NewEntity(int id) 
     {
@@ -48,9 +47,6 @@ public class CubeEntity : MonoBehaviour
         disolveValue = 0;
         cube.GetComponent<MeshRenderer>().material.SetFloat("_Disolve", disolveValue);
         _isEndOfLife = false;
-        hitDir = HitDir.None;
-        //hitSound1 = GetComponent<AudioSource>();
-        //hitSound1.pitch += (float)(random.NextDouble() * random.Next(-1, 1))/5;
         
         InitSoundFX();
 

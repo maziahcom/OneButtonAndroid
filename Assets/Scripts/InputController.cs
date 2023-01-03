@@ -29,12 +29,7 @@ public class InputController : MonoBehaviour
             space_pressed_thisframe = true;
         else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Joystick1Button0) || Input.GetKeyUp(KeyCode.Joystick1Button1) || Input.GetKeyUp(KeyCode.Joystick1Button2) || Input.GetKeyUp(KeyCode.Joystick1Button3))
             space_released_thisframe = true;
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //    space_pressed_thisframe = true;
-        //else if (Input.GetKeyUp(KeyCode.Space))
-        //    space_released_thisframe = true;
-        //if (Input.GetKeyDown(KeyCode.Joystick1Button0))
-        //    Debug.Log("Key 0");
+
 
     }
 }

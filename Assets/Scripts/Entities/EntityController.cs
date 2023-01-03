@@ -44,6 +44,11 @@ public class EntityController : MonoBehaviour
             default:
                 break;
         }
+        
+    }
+
+    public void StartEntitiesLevel1()
+    {
         StartCoroutine(time());
     }
 
@@ -75,7 +80,7 @@ public class EntityController : MonoBehaviour
         int yRangeInt = (int)(yRange * 100);
         int r = random.Next(0,yRangeInt);
         float f = (r / 100.0f) + yDown;
-        return new Vector3(0, f, 20);
+        return new Vector3(0, f, 40);
     }
     public void UpdateEntities()
     {

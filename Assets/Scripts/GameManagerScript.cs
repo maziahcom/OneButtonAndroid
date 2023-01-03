@@ -8,21 +8,45 @@ using UnityEngine;
 [RequireComponent(typeof(EnvironmentController))]
 public class GameManagerScript : MonoBehaviour
 {
-    PlayerController playerController;
-    InputController inputController;
-    EntityController entityController;
-    EnvironmentController environmentController;
+    private PlayerController playerController;
+    private InputController inputController;
+    private EntityController entityController;
+    private EnvironmentController environmentController;
+    private UIController uiController;
+    private TitleScreen titleScreen;
+
+    public enum Scenearios
+    {
+        intro,
+        titleScreen,
+        level1,
+        level2,
+        level3,
+        win,
+        lose
+    }
+    private Scenearios sceneario;
+    private bool scenarioComplete;
+    private Scenearios nextScenario;
+
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
         inputController = GetComponent<InputController>(); 
         entityController = GetComponent<EntityController>();
         environmentController = GetComponent<EnvironmentController>();
+        uiController = GetComponent<UIController>();
+        titleScreen = GetComponent<TitleScreen>();
     }
     void Start()
     {
+        sceneario = Scenearios.titleScreen;
+
+        titleScreen.InitTitleScreen();
+        titleScreen.DisplayTitleScreen();
         environmentController.InitMaterials();
         entityController.InitEntities();
+        entityController.StartEntitiesLevel1();
         inputController.InitInputs();
         playerController.InitPlayer();
     }
@@ -30,8 +54,14 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerController.GetScenarioComplete())
+        {
+            playerController.GetNextScenario(out nextScenario); 
+        }
+        
         inputController.UpdateInputs();
-        if(inputController.GetSpacePressedThisFrame())
+
+        if (inputController.GetSpacePressedThisFrame())
         {
             playerController.ButtonWasPressed();
         }
@@ -41,10 +71,5 @@ public class GameManagerScript : MonoBehaviour
         }
         entityController.UpdateEntities();
         playerController.UpdatePlayer();
-    }
-    private void FixedUpdate()
-    {
-        //entityController.UpdateEntities();
-        //playerController.UpdatePlayer();
     }
 }

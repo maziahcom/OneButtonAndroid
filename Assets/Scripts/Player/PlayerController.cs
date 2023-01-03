@@ -11,7 +11,6 @@ using Random = System.Random;
 public class PlayerController : MonoBehaviour
 {
     public GameObject PlayerObject;
-    //public AudioSource attack1;
     public float angleDown = 34.0f;
     public float angleUp = -34.0f;
     public float posUp = 7.0f;
@@ -68,11 +67,20 @@ public class PlayerController : MonoBehaviour
         swingState.SetState(SwingState.State.DESCENDING);
     }
 
-    // Update is called once per frame
+    public bool GetScenarioComplete()
+    {
+        return false;
+    }
+
+    public void GetNextScenario(out GameManagerScript.Scenearios next)
+    {
+        next = GameManagerScript.Scenearios.level1;
+    }
+
     public void UpdatePlayer()
     {
         if(swingState.GetState() != SwingState.State.STATIC)
-        {//        PlayerObject.transform.position.Set(PlayerObject.transform.position.x, posDown, PlayerObject.transform.position.z);
+        {
             posY = PlayerObject.transform.position.y;
             if (swingState.GetState() == SwingState.State.ASCENDING)
             {
@@ -96,37 +104,6 @@ public class PlayerController : MonoBehaviour
                     swingState.SetState(SwingState.State.STATIC);
                 }
             }
-
-            //use r to hold a rotation value matching the format in the editor
-           // r = PlayerObject.transform.localEulerAngles.z;
-          //  if (r > 180)
-           //     r -= 360f;
-           // else if (r < -180)
-             //   r += 360f;
-            
-         /*   if (swingState.GetState() == SwingState.State.ASCENDING)
-            {
-                if (r > angleUp)
-                {
-                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * swingState.GetDirectionMultiplier(), Space.Self);
-                }
-                else
-                {
-                    swingState.SetState(SwingState.State.STATIC);
-                }
-            }
-
-            else if(swingState.GetState() == SwingState.State.DESCENDING)
-            {
-                if (r < angleDown)
-                {
-                    PlayerObject.transform.Rotate(0, 0, Time.deltaTime * rotationSpeed * swingState.GetDirectionMultiplier(), Space.Self);
-                }
-                else
-                {
-                    swingState.SetState(SwingState.State.STATIC);
-                }
-            }*/
         }
     }
 
