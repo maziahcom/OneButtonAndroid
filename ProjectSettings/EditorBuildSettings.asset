@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameManager.unity
     guid: d80c131dbbd376042945030bd40825b4
   - enabled: 1
-    path: Assets/Scenes/Scene1.0.unity
+    path: Assets/Scenes/Level1.unity
     guid: e632ebe6f2a6b564789e2d3ca574a55b
   - enabled: 1
     path: Assets/Scenes/TitleScreen.unity

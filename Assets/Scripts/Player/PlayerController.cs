@@ -67,15 +67,9 @@ public class PlayerController : MonoBehaviour
         swingState.SetState(SwingState.State.DESCENDING);
     }
 
-    public bool GetScenarioComplete()
-    {
-        return false;
-    }
 
-    public void GetNextScenario(out GameManagerScript.Scenearios next)
-    {
-        next = GameManagerScript.Scenearios.level1;
-    }
+
+
 
     public void UpdatePlayer()
     {

@@ -15,20 +15,6 @@ public class GameManagerScript : MonoBehaviour
     private UIController uiController;
     private TitleScreen titleScreen;
 
-    public enum Scenearios
-    {
-        intro,
-        titleScreen,
-        level1,
-        level2,
-        level3,
-        win,
-        lose
-    }
-    private Scenearios sceneario;
-    private bool scenarioComplete;
-    private Scenearios nextScenario;
-
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -40,10 +26,6 @@ public class GameManagerScript : MonoBehaviour
     }
     void Start()
     {
-        sceneario = Scenearios.titleScreen;
-
-        titleScreen.InitTitleScreen();
-        titleScreen.DisplayTitleScreen();
         environmentController.InitMaterials();
         entityController.InitEntities();
         entityController.StartEntitiesLevel1();
@@ -54,10 +36,10 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerController.GetScenarioComplete())
-        {
-            playerController.GetNextScenario(out nextScenario); 
-        }
+        //if (playerController.GetScenarioComplete())
+        //{
+        //    playerController.GetNextScenario(out nextScenario); 
+        //}
         
         inputController.UpdateInputs();
 
