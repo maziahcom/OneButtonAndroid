@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public List<GameObject> objectsDontDestroy = new List<GameObject>();
     public enum SceneNames
     {
         preTitle2,
@@ -19,8 +20,13 @@ public class SceneLoader : MonoBehaviour
     public static SceneNames nextScene = SceneNames.preTitle2;
 
     void Start()
-    {
+    {   //Scene loader has to be always available (across scenes)
         DontDestroyOnLoad(gameObject);
+        
+        //Other objects can be always available (e.g., global volume, main camera, event system)
+        for(int i = 0; i < objectsDontDestroy.Count; i++)
+            DontDestroyOnLoad(objectsDontDestroy[i]);
+
         nextScene = SceneNames.preTitle2;
         LoadNextScene();
     }

@@ -5,9 +5,11 @@ using UnityEngine;
 public class SceneTransition : MonoBehaviour
 {
     SceneLoader loader;
+    Camera cam;
     private void Awake()
     {
         loader = FindObjectOfType<SceneLoader>();
+        cam = FindObjectOfType<Camera>(Camera.main);
         StartCoroutine(Countdown());
     }
     private IEnumerator Countdown()
