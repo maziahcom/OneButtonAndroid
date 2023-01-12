@@ -610,6 +610,7 @@ GameObject:
   - component: {fileID: 221842449}
   - component: {fileID: 221842448}
   - component: {fileID: 221842454}
+  - component: {fileID: 221842455}
   m_Layer: 0
   m_Name: PolyShape (1)
   m_TagString: Untagged
@@ -659,7 +660,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ae429a8237ab24b41b805ae41eb41188, type: 2}
+  - {fileID: 2100000, guid: a4ebcaede92d49c4a84a443fe553e40e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1033,6 +1034,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.01
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &221842455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221842447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8064c5369887f8249a46fae61b1c8a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motionBlurMaterial: {fileID: 2100000, guid: a4ebcaede92d49c4a84a443fe553e40e, type: 2}
 --- !u!1 &344068848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2912,7 +2926,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30820
+  m_Name: pb_Mesh31668
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
