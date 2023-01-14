@@ -13,7 +13,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -43,13 +43,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FloatBlurAmount: 50
+    - _FloatBlurAmount: 167.6
     - _FloatFrames: 20
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _V3Pos: {r: -4.8, g: -1.416423, b: -4.17, a: 0}
-    - _V3PrevPos: {r: -4.8, g: -1.416423, b: -4.17, a: 0}
+    - _V3Pos: {r: 0, g: -1.6991566, b: -4.17, a: 0}
+    - _V3PrevPos: {r: 0, g: -1.6991566, b: -4.17, a: 0}
     - _V3Velocity: {r: 0, g: 0, b: 0, a: 0}
     - _V3Zero: {r: -12.91, g: 4.81, b: 4.76, a: 0}
   m_BuildTextureStacks: []

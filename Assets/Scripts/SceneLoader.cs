@@ -18,7 +18,11 @@ public class SceneLoader : MonoBehaviour
     }
 
     public static SceneNames nextScene = SceneNames.preTitle2;
-
+    private void Awake()
+    {
+        //Set target framerate according to refresh rate of player's screen
+        //Application.targetFrameRate = 30;//Screen.currentResolution.refreshRate;
+    }
     void Start()
     {   //Scene loader has to be always available (across scenes)
         DontDestroyOnLoad(gameObject);
@@ -27,7 +31,10 @@ public class SceneLoader : MonoBehaviour
         for(int i = 0; i < objectsDontDestroy.Count; i++)
             DontDestroyOnLoad(objectsDontDestroy[i]);
 
+        //set the first scene to load
         nextScene = SceneNames.preTitle2;
+
+        //load the first scene
         LoadNextScene();
     }
 

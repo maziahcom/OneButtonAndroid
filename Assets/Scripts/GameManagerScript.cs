@@ -14,7 +14,7 @@ public class GameManagerScript : MonoBehaviour
     private EnvironmentController environmentController;
     private UIController uiController;
     private TitleScreen titleScreen;
-
+    private MotionBluWithInstance motionBlurController;
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -23,6 +23,7 @@ public class GameManagerScript : MonoBehaviour
         environmentController = GetComponent<EnvironmentController>();
         uiController = GetComponent<UIController>();
         titleScreen = GetComponent<TitleScreen>();
+        motionBlurController = FindObjectOfType<MotionBluWithInstance>();
     }
     void Start()
     {
@@ -31,16 +32,14 @@ public class GameManagerScript : MonoBehaviour
         entityController.StartEntitiesLevel1();
         inputController.InitInputs();
         playerController.InitPlayer();
+        //remove this later for final build (it can be set ealier in the scene loader)
+        Application.targetFrameRate = 120;//Screen.currentResolution.refreshRate;
+        motionBlurController.InitMotionBlur(Application.targetFrameRate);
     }
 
     // Update is called once per frame
     void Update()
-    {
-        //if (playerController.GetScenarioComplete())
-        //{
-        //    playerController.GetNextScenario(out nextScenario); 
-        //}
-        
+    {   
         inputController.UpdateInputs();
 
         if (inputController.GetSpacePressedThisFrame())
@@ -53,5 +52,6 @@ public class GameManagerScript : MonoBehaviour
         }
         entityController.UpdateEntities();
         playerController.UpdatePlayer();
+        motionBlurController.UpdateMotionBlur();
     }
 }

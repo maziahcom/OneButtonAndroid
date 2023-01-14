@@ -54,7 +54,63 @@
             },
             "m_InputSlot": {
                 "m_Node": {
+                    "m_Id": "231e53c68c294abba0dcb861dae6af28"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "1f52f5e70dee4213a2fc61aee37e2721"
+                },
+                "m_SlotId": 4
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "3e404a36c78849ac8b1526bc06b1d256"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "1f52f5e70dee4213a2fc61aee37e2721"
+                },
+                "m_SlotId": 4
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "3e4561a4465341a6bff77fe51d5c4e7b"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "1f52f5e70dee4213a2fc61aee37e2721"
+                },
+                "m_SlotId": 4
+            },
+            "m_InputSlot": {
+                "m_Node": {
                     "m_Id": "9b22ca85497e46cfac5f2380478f984b"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "1f52f5e70dee4213a2fc61aee37e2721"
+                },
+                "m_SlotId": 4
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "b958b959745f4199805f6ffda218dc55"
                 },
                 "m_SlotId": 0
             }
@@ -133,7 +189,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Height",
     "m_StageCapability": 3,
-    "m_Value": 0.5,
+    "m_Value": 0.9200000166893005,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }
@@ -330,7 +386,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Radius",
     "m_StageCapability": 3,
-    "m_Value": 0.10000000149011612,
+    "m_Value": -0.05000000074505806,
     "m_DefaultValue": 0.10000000149011612,
     "m_Labels": []
 }
@@ -345,7 +401,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Width",
     "m_StageCapability": 3,
-    "m_Value": 0.5,
+    "m_Value": 0.949999988079071,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }
