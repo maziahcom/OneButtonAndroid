@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
     private UIController uiController;
     private TitleScreen titleScreen;
     private MotionBluWithInstance motionBlurController;
+
     void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -31,6 +32,7 @@ public class GameManagerScript : MonoBehaviour
         entityController.InitEntities();
         entityController.StartEntitiesLevel1();
         inputController.InitInputs();
+        uiController.InitUI();
         playerController.InitPlayer();
         //remove this later for final build (it can be set ealier in the scene loader)
         Application.targetFrameRate = 120;//Screen.currentResolution.refreshRate;
@@ -51,6 +53,8 @@ public class GameManagerScript : MonoBehaviour
             playerController.ButtonWasReleased();
         }
         entityController.UpdateEntities();
+        int dc = entityController.GetDeadCount();
+        uiController.ScoreAdd(dc);
         playerController.UpdatePlayer();
         motionBlurController.UpdateMotionBlur();
     }

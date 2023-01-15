@@ -8,6 +8,7 @@ public class MotionBluWithInstance : MonoBehaviour
     public Mesh mesh;
     public Material material;
 
+    private float maxGlow = 0.2f;
     private int instanceCount;
     private int frameCount;
     private List<Matrix4x4> matrix = new List<Matrix4x4>();
@@ -19,6 +20,9 @@ public class MotionBluWithInstance : MonoBehaviour
     private float yDiff;
     private Material m_material;
     private bool initialised = false;
+    private float yVel = 0;
+    private float yVelPrior = 0;
+    private float glowValue = 0;
     public void InitMotionBlur(int targetFrameRate)
     {
         //frameCount is how many frames of position data to hold for interpolation
@@ -39,7 +43,8 @@ public class MotionBluWithInstance : MonoBehaviour
         //the material of the original mesh
         m_renderer = GetComponent<Renderer>();
         m_material = m_renderer.material;
-        
+        maxGlow = m_material.GetFloat("_maxGlow");
+
         //set alpha to full opaque for main object
         Color colorA = m_material.color;
         colorA.a = 1;
@@ -91,6 +96,20 @@ public class MotionBluWithInstance : MonoBehaviour
         //yDiff is a vector along which we blur - lets use first and last frame from the frame array
         yDiff = framePositions[0].y - framePositions[frameCount-1].y;
 
+        //report velocity back to the shader
+        yVelPrior = yVel;
+        yVel = framePositions[0].y - framePositions[1].y;
+        if (yVel > yVelPrior)
+            glowValue = maxGlow;
+        else
+        {
+            glowValue -= 0.25f * Time.deltaTime;
+            if(glowValue < 0)
+                glowValue = 0;
+        }
+
+        m_material.SetFloat("_yVel", glowValue);
+        
         //draw the 0th mesh unaltered
         //matrix[0] = transform.localToWorldMatrix;
 

@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.VFX;
 using Random = System.Random;
 
 [RequireComponent(typeof(CubeEntity))]
@@ -15,6 +16,7 @@ public class EntityController : MonoBehaviour
     public float secondsDelay = 1.0f;
     public Material cube_material;
     public string ParamNameDisolve = "change this to your material/shader reference for disolve";
+    
     //public AudioSource hitSound1;
 
     private Vector3 dx;
@@ -43,8 +45,7 @@ public class EntityController : MonoBehaviour
                 break;
             default:
                 break;
-        }
-        
+        }     
     }
 
     public void StartEntitiesLevel1()
@@ -87,14 +88,25 @@ public class EntityController : MonoBehaviour
         entities.MoveEntities(movementSpeed * Time.deltaTime * dx);
         //movementSpeed += (Time.deltaTime/5);
     }
-
+    public int GetDeadCount()
+    {
+        //get and reset the deadcount (the getter will add the dead to the scoreboard so the reset can be performed immediately)
+        int d = entities.GetDeadCount();
+        entities.ResetDeadCount();
+        return d;
+    }
     private class Entities
     {
         private int max_entities;
         List<CubeEntity> entitieList = new List<CubeEntity>();
+        
+        //keep count of entities hit by the player. This is for score-keeping purposes
+        private int deadCount;
+
         public Entities(int capacity)
         {
             max_entities = capacity;
+            deadCount = 0;
         }
 
         public int CreateEntity(Material m)
@@ -126,6 +138,14 @@ public class EntityController : MonoBehaviour
         {
             return entitieList.Count;
         }
+        public int GetDeadCount()
+        {
+            return deadCount;
+        }
+        public void ResetDeadCount()
+        {
+            deadCount = 0;
+        }
 
         public void PositionEntity(int id, Vector3 pos)
         {
@@ -137,10 +157,18 @@ public class EntityController : MonoBehaviour
             for(int i = entitieList.Count - 1; i >= 0; i--)
             {
                 entitieList[i].Move(dx);
+
+                if (entitieList[i].GetTriggeredStatus() == true)
+                    deadCount++;
+
                 if (entitieList[i].GetPosition().z < -20)
                     DeleteEntity(i);
                 else if (entitieList[i].GetIsDead())
                     DeleteEntity(i);
+                //-----------comment------------
+                //Note: dont put anything here after DeleteEntity
+                //because it will produce index out of bounds errors (the entity has been deleted)
+                //------------------------------
             }
         }
 
