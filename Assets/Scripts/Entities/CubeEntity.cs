@@ -12,6 +12,7 @@ using Random = System.Random;
 public class CubeEntity : MonoBehaviour
 {
     public float disolveSpeed = 2.0f;
+    public string nameOfMainPlayerCollider = "PlayerCube";
     private GameObject effectsObject;
     private GameObject effectsObjectClone;
     private Random random = new Random();
@@ -145,23 +146,25 @@ public class CubeEntity : MonoBehaviour
     // because there is no guarentee OnTriggerEnter will be caught
     // every time. (because we are not trying to use FixedUpdate)
     //--------------------------
-    private void HandleHit()
+    private void HandleHit(Collider other)
     {
-        if (!_isTriggering)
-            PlaySound();
+        if (other.gameObject.name == nameOfMainPlayerCollider)
+        {
+            if (!_isTriggering)
+                PlaySound();
 
-        _isTriggering = true;
-        
+            _isTriggering = true;
+        }
     }
 
     void OnTriggerStay(Collider other)
     {
-        HandleHit();
+        HandleHit(other);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        HandleHit();
+        HandleHit(other);
     }
 
 }

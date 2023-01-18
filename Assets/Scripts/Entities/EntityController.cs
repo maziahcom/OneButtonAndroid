@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.VFX;
 using Random = System.Random;
 
 [RequireComponent(typeof(CubeEntity))]
+[RequireComponent(typeof(LevelReader))]
 public class EntityController : MonoBehaviour
 {
     public enum Axis { X, Y, Z };
@@ -26,11 +28,41 @@ public class EntityController : MonoBehaviour
     private const float yUp = 2.9f;
     private const float yDown = -0.75f;
 
+    LevelReader levels;
+
+    private float delta;
+
+    int sequenceCounter;
+    bool sequenceDataLoaded;
+
+    private List<float> timestamps;
+    private List<LevelReader.Reader.NextEvent> nextevents;
+
     public void InitEntities()
     {
-        //----------- Log ------------//
-        //Debug.Log("Entity controller started");
-        //-----------     ------------//
+        //reader = new LevelReader.Reader();
+        //LevelReader.Lo
+        sequenceCounter = 0;
+        sequenceDataLoaded = false;
+        levels = new LevelReader();
+        timestamps = new List<float>();
+        nextevents = new List<LevelReader.KeyEvents.NextEvent>();
+
+        bool success = levels.LoadLevel1();
+        if(success)
+        {
+            //we now have access the structure class - note: it's buried deep TODO.. fix this class mis-structure
+            timestamps = levels.reader.structure.GetTimestamps();
+            nextevents = levels.reader.structure.GetNextEvents();
+            delta = -1;
+            sequenceDataLoaded=true;
+        }
+        else
+        {
+            Debug.LogError("Level data not loaded error: 202-5");
+        }
+
+
         entities = new Entities(max_entities);
         switch (axis)
         {
@@ -50,10 +82,11 @@ public class EntityController : MonoBehaviour
 
     public void StartEntitiesLevel1()
     {
-        StartCoroutine(time());
+
+        //StartCoroutine(time());
     }
 
-    IEnumerator time()
+    /*IEnumerator time()
     {
         while (true)
         {
@@ -63,7 +96,7 @@ public class EntityController : MonoBehaviour
             //Debug.Log("Timer tick");
             //----------------------------//
         }
-    }
+    }*/
     void timeCount()
     {
         int id = entities.CreateEntity(cube_material);
@@ -85,8 +118,35 @@ public class EntityController : MonoBehaviour
     }
     public void UpdateEntities()
     {
+        if (sequenceDataLoaded)
+        {
+            if (delta == -1)
+            {
+                //this is the first frame
+                delta = 0;
+            }
+            else
+                delta += Time.deltaTime; 
+
+            if (timestamps[sequenceCounter] <= delta)
+            {
+                //generate an entity and increment counter
+                int id = entities.CreateEntity(cube_material);
+                if (id >= 0)
+                {
+                    entities.PositionEntity(id, GenerateNextPosition());
+                }
+
+                sequenceCounter++;
+
+                //reset delta
+                delta = 0;
+
+                if (sequenceCounter >= timestamps.Count)
+                    sequenceDataLoaded = false;
+            }           
+        }
         entities.MoveEntities(movementSpeed * Time.deltaTime * dx);
-        //movementSpeed += (Time.deltaTime/5);
     }
     public int GetDeadCount()
     {

@@ -100,6 +100,8 @@
     <Compile Include="Assets\Scripts\TitleScreen\SceneTransitionFromTitleScreen.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\keijiro\smflite\SmfLite.cs" />
+    <Compile Include="Assets\Scripts\MusicMidi\MidiController.cs" />
     <Compile Include="Assets\Scripts\PreTitleScreen\FadeText.cs" />
     <Compile Include="Assets\Scripts\UI\UIController.cs" />
     <Compile Include="Assets\Scripts\PreTitleScreen\Zoomers.cs" />
@@ -109,6 +111,10 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\WriteBytesToFile.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\LevelReaderWriter.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\ReadBytesFromFile.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\LevelReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

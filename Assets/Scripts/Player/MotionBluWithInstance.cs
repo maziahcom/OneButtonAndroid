@@ -19,7 +19,7 @@ public class MotionBluWithInstance : MonoBehaviour
     private List<Material> materials = new List<Material>();
     private float yDiff;
     private Material m_material;
-    private bool initialised = false;
+    //private bool initialised = false;
     private float yVel = 0;
     private float yVelPrior = 0;
     private float glowValue = 0;
@@ -74,7 +74,7 @@ public class MotionBluWithInstance : MonoBehaviour
         {
             framePositions[i] = transform.position;
         }
-        initialised = true;
+        //initialised = true;
     }
 
     // Update is called once per frame
