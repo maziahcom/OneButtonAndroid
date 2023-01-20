@@ -17,8 +17,17 @@ public class GameManagerScript : MonoBehaviour
     private MotionBluWithInstance motionBlurController;
     private MidiController midiController;
 
+    public float delaySecondsBeforeFirstUpdate = 1.0f;
+    private float awakeTime;
+    private List<MidiController.MidiJob> midiJobs;
+    
     void Awake()
     {
+        awakeTime = Time.unscaledTime;
+        //remove this later for final build (it can be set ealier in the scene loader)
+        Application.targetFrameRate = 120;//Screen.currentResolution.refreshRate;
+
+        //load componentt handles
         playerController = GetComponent<PlayerController>();
         inputController = GetComponent<InputController>(); 
         entityController = GetComponent<EntityController>();
@@ -27,9 +36,8 @@ public class GameManagerScript : MonoBehaviour
         titleScreen = GetComponent<TitleScreen>();
         motionBlurController = FindObjectOfType<MotionBluWithInstance>();
         midiController = FindObjectOfType<MidiController>();
-    }
-    void Start()
-    {
+
+        //instantiate components
         environmentController.InitMaterials();
         entityController.InitEntities();
         entityController.StartEntitiesLevel1();
@@ -37,15 +45,35 @@ public class GameManagerScript : MonoBehaviour
         uiController.InitUI();
         midiController.InitMidi();
         playerController.InitPlayer();
-        //remove this later for final build (it can be set ealier in the scene loader)
-        Application.targetFrameRate = 120;//Screen.currentResolution.refreshRate;
         motionBlurController.InitMotionBlur(Application.targetFrameRate);
+
+
+    }
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //midiController.UpdateMidi(); 
+        //Allow all the components a moment to load before starting the Update() loop;
+        if (Time.unscaledTime - awakeTime < delaySecondsBeforeFirstUpdate)
+            return;
+
+        //midiController and entityController don't directly interface each other
+        //this game manager script reads pending midi events list and
+        //dispatches requests to the entity spawner accordingly
+
+        midiController.UpdateMidi();
+        midiJobs = midiController.GetAndClearMidiJobs();
+        /*for(int i = 0; i < midiJobs.Count; i++)
+        {
+            entityController.RequestSpawn(midiJobs[i].on, midiJobs[i].channel, midiJobs[i].note);
+        }*/
+        if(midiJobs.Count > 0)
+            entityController.RequestSpawn(midiJobs[0].on, midiJobs[0].channel, midiJobs[0].note);
+
         inputController.UpdateInputs();
 
         if (inputController.GetSpacePressedThisFrame())

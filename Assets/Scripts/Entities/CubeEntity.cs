@@ -48,6 +48,7 @@ public class CubeEntity : MonoBehaviour
         rb.useGravity = false;
         rb.isKinematic = true;
         boxCollider.isTrigger = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         disolveValue = 0;
         cube.GetComponent<MeshRenderer>().material.SetFloat("_Disolve", disolveValue);
         _isEndOfLife = false;
@@ -72,7 +73,7 @@ public class CubeEntity : MonoBehaviour
         audioSourceFX.bypassReverbZones = true;
         audioSourceFX.playOnAwake = false;
         audioSourceFX.priority = 5;
-        audioSourceFX.volume = 1.0f;
+        audioSourceFX.volume = 0.1f;
         audioSourceFX.pitch = 1.0f;
 
         for (int i = 1; i <= 10; i++)

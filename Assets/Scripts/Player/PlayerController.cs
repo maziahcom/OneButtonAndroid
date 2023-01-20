@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private List<AudioClip> wizzFX = new List<AudioClip>();
     private AudioSource audioSourceFX;
     private Random random = new Random();
-
+    bool firstpress = true;
     public void InitPlayer()
     {
 
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         audioSourceFX.bypassReverbZones = true;
         audioSourceFX.playOnAwake = false;
         audioSourceFX.priority = 5;
-        audioSourceFX.volume = 1.0f;
+        audioSourceFX.volume = 0.1f;
         audioSourceFX.pitch = 1.0f;
 
         for (int i = 2; i <= 16; i++)
@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
 
     public void ButtonWasPressed()
     {
+        if(firstpress)
+        {
+            Debug.Log("first press time: " + Time.unscaledTime.ToString());
+            firstpress = false;
+        }
         PlaySound();
         swingState.SetState(SwingState.State.ASCENDING);
     }
@@ -98,6 +103,12 @@ public class PlayerController : MonoBehaviour
                     swingState.SetState(SwingState.State.STATIC);
                 }
             }
+            //keep player within bounds
+            posY = PlayerObject.transform.position.y;
+            if(posY > posUp)
+                PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, posUp, PlayerObject.transform.position.z);
+            else if (posY < posDown)
+                PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, posDown, PlayerObject.transform.position.z);
         }
     }
 

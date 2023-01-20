@@ -9,7 +9,7 @@ using UnityEngine.VFX;
 using Random = System.Random;
 
 [RequireComponent(typeof(CubeEntity))]
-[RequireComponent(typeof(LevelReader))]
+//[RequireComponent(typeof(LevelReader))]
 public class EntityController : MonoBehaviour
 {
     public enum Axis { X, Y, Z };
@@ -108,16 +108,22 @@ public class EntityController : MonoBehaviour
         //Debug.Log("Creating entity return value: " + id.ToString());
         //----------------------------//
     }
-    Vector3 GenerateNextPosition()
+    Vector3 GenerateNextPosition(bool rndY = true)
     {
         float yRange = yUp - yDown;
         int yRangeInt = (int)(yRange * 100);
         int r = random.Next(0,yRangeInt);
-        float f = (r / 100.0f) + yDown;
+        float f;
+
+        if (rndY)
+            f = (r / 100.0f) + yDown;
+        else
+            f = yDown + (yRange / (float)2);
+
         return new Vector3(0, f, 40);
     }
     public void UpdateEntities()
-    {
+    {   /*
         if (sequenceDataLoaded)
         {
             if (delta == -1)
@@ -145,9 +151,23 @@ public class EntityController : MonoBehaviour
                 if (sequenceCounter >= timestamps.Count)
                     sequenceDataLoaded = false;
             }           
-        }
+        }*/
+
         entities.MoveEntities(movementSpeed * Time.deltaTime * dx);
     }
+
+    public void RequestSpawn(bool on, byte channel, byte note)
+    {
+        if (on)
+        {
+            int id = entities.CreateEntity(cube_material);
+            if (id >= 0)
+            {
+                entities.PositionEntity(id, GenerateNextPosition(false));
+            }
+        }
+    }
+
     public int GetDeadCount()
     {
         //get and reset the deadcount (the getter will add the dead to the scoreboard so the reset can be performed immediately)
@@ -176,7 +196,7 @@ public class EntityController : MonoBehaviour
                 int nextID = GetNextAvailableID();
                 if (nextID < 0)
                     return nextID;
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);           
                 cube.GetComponent<MeshRenderer>().material = m;
                 //cube.AddComponent<AudioSource>();
                 //cube.GetComponent<AudioSource>().clip = a.clip;

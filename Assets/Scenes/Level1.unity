@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &11171104
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5494,7 +5494,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 646a08ef8a38003458492928dfc1065f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: dc2bab20bf981804bb2fe50d15cd5ece, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5592,9 +5592,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab3c3da15611f640ae69b2f6a688a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceFile: {fileID: 4900000, guid: f998b0b5da346534e88a9a4dd5bb6cde, type: 3}
-  startTime: 5
-  bpm: 126
+  sourceFile: {fileID: 4900000, guid: 5fb534f41cc959e4e8c6c4e3fad69c6a, type: 3}
+  audioSkipToSeconds: 0
+  audioStartDelay: 7.3
+  midiStartDelay: 0.01
+  enabledChannels: 02000000
 --- !u!4 &309445485
 Transform:
   m_ObjectHideFlags: 0
@@ -10964,9 +10966,9 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!1 &694351139
 GameObject:
   m_ObjectHideFlags: 0
@@ -11473,7 +11475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1009152957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11677,7 +11679,7 @@ MonoBehaviour:
   angleUp: -34
   posUp: 3.78
   posDown: -1.68
-  rotationSpeed: 40
+  rotationSpeed: 80
 --- !u!114 &1098989067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11690,6 +11692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d918b225195f6cb4a9af03ce4f5cb6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delaySecondsBeforeFirstUpdate: 1
 --- !u!4 &1098989068
 Transform:
   m_ObjectHideFlags: 0
@@ -11904,7 +11907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &1173965487
 AudioSource:
   m_ObjectHideFlags: 0
