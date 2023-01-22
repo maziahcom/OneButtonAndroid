@@ -22,7 +22,7 @@ public class EntityController : MonoBehaviour
     //public AudioSource hitSound1;
 
     private Vector3 dx;
-    private const int max_entities = 50;
+    private const int max_entities = 250;
     private Random random = new Random();
     private Entities entities;
     private const float yUp = 2.9f;
@@ -44,23 +44,23 @@ public class EntityController : MonoBehaviour
         //LevelReader.Lo
         sequenceCounter = 0;
         sequenceDataLoaded = false;
-        levels = new LevelReader();
-        timestamps = new List<float>();
-        nextevents = new List<LevelReader.KeyEvents.NextEvent>();
+        //levels = new LevelReader();
+        //timestamps = new List<float>();
+        //nextevents = new List<LevelReader.KeyEvents.NextEvent>();
 
-        bool success = levels.LoadLevel1();
-        if(success)
-        {
+        //bool success = levels.LoadLevel1();
+        //if(success)
+        //{
             //we now have access the structure class - note: it's buried deep TODO.. fix this class mis-structure
-            timestamps = levels.reader.structure.GetTimestamps();
-            nextevents = levels.reader.structure.GetNextEvents();
-            delta = -1;
-            sequenceDataLoaded=true;
-        }
-        else
-        {
-            Debug.LogError("Level data not loaded error: 202-5");
-        }
+         //   timestamps = levels.reader.structure.GetTimestamps();
+          //  nextevents = levels.reader.structure.GetNextEvents();
+         //   delta = -1;
+         //   sequenceDataLoaded=true;
+       // }
+       // else
+       // {
+        //    Debug.LogError("Level data not loaded error: 202-5");
+       // }
 
 
         entities = new Entities(max_entities);
@@ -97,28 +97,30 @@ public class EntityController : MonoBehaviour
             //----------------------------//
         }
     }*/
-    void timeCount()
-    {
-        int id = entities.CreateEntity(cube_material);
-        if (id >= 0)
-        {
-            entities.PositionEntity(id, GenerateNextPosition());
-        }
+//    void timeCount()
+//    {
+//        int id = entities.CreateEntity(cube_material);
+//        if (id >= 0)
+//        {
+//            entities.PositionEntity(id, GenerateNextPosition());
+//        }
         //----------- Log ------------//
         //Debug.Log("Creating entity return value: " + id.ToString());
         //----------------------------//
-    }
-    Vector3 GenerateNextPosition(bool rndY = true)
+//    }
+    Vector3 GenerateNextPosition(int rowNumber = -1)
     {
         float yRange = yUp - yDown;
         int yRangeInt = (int)(yRange * 100);
-        int r = random.Next(0,yRangeInt);
         float f;
 
-        if (rndY)
-            f = (r / 100.0f) + yDown;
+        if (rowNumber >= 1 && rowNumber <= 4)
+            f = yUp + 0.5f - rowNumber;
         else
-            f = yDown + (yRange / (float)2);
+        {
+            int r = random.Next(0, yRangeInt);
+            f = (r / 100.0f) + yDown;
+        }
 
         return new Vector3(0, f, 40);
     }
@@ -163,9 +165,31 @@ public class EntityController : MonoBehaviour
             int id = entities.CreateEntity(cube_material);
             if (id >= 0)
             {
-                entities.PositionEntity(id, GenerateNextPosition(false));
+                entities.PositionEntity(id, GenerateNextPosition(2));
             }
         }
+    }
+    public void RequestSpawnByte(byte b)
+    {
+        if (b > 0)
+        {
+            //check which bits of the byte are set
+            //each bit corresponds to rows 1,2,3,4 on entity drop zone
+            if ((b & 0x1) == 0x1)
+                SpawnEntityNoRandom(1);
+            if ((b & 0x2) == 0x2)
+                SpawnEntityNoRandom(2);
+            if ((b & 0x4) == 0x4)
+                SpawnEntityNoRandom(3);
+            if ((b & 0x8) == 0x8)
+                SpawnEntityNoRandom(4);
+        }
+    }
+
+    private void SpawnEntityNoRandom(int rowNumber)
+    {
+        int id = entities.CreateEntity(cube_material);
+        entities.PositionEntity(id, GenerateNextPosition(rowNumber));
     }
 
     public int GetDeadCount()

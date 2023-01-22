@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         audioSourceFX.bypassReverbZones = true;
         audioSourceFX.playOnAwake = false;
         audioSourceFX.priority = 5;
-        audioSourceFX.volume = 0.1f;
+        audioSourceFX.volume = 1.0f;
         audioSourceFX.pitch = 1.0f;
 
         for (int i = 2; i <= 16; i++)

@@ -13,13 +13,14 @@ public class GameManagerScript : MonoBehaviour
     private EntityController entityController;
     private EnvironmentController environmentController;
     private UIController uiController;
-    private TitleScreen titleScreen;
+    //private TitleScreen titleScreen;
     private MotionBluWithInstance motionBlurController;
-    private MidiController midiController;
+    //private MidiController midiController;
+    private EntitySpawnLoader entitySpawnLoader;
 
     public float delaySecondsBeforeFirstUpdate = 1.0f;
     private float awakeTime;
-    private List<MidiController.MidiJob> midiJobs;
+    //private List<MidiController.MidiJob> midiJobs;
     
     void Awake()
     {
@@ -33,17 +34,19 @@ public class GameManagerScript : MonoBehaviour
         entityController = GetComponent<EntityController>();
         environmentController = GetComponent<EnvironmentController>();
         uiController = GetComponent<UIController>();
-        titleScreen = GetComponent<TitleScreen>();
+        //titleScreen = GetComponent<TitleScreen>();
         motionBlurController = FindObjectOfType<MotionBluWithInstance>();
-        midiController = FindObjectOfType<MidiController>();
+        //midiController = FindObjectOfType<MidiController>();
+        entitySpawnLoader = FindObjectOfType<EntitySpawnLoader>();
 
         //instantiate components
         environmentController.InitMaterials();
         entityController.InitEntities();
         entityController.StartEntitiesLevel1();
+        entitySpawnLoader.Init(entitySpawnLoader.fileamePublic, 4);
         inputController.InitInputs();
         uiController.InitUI();
-        midiController.InitMidi();
+        //midiController.InitMidi();
         playerController.InitPlayer();
         motionBlurController.InitMotionBlur(Application.targetFrameRate);
 
@@ -65,14 +68,14 @@ public class GameManagerScript : MonoBehaviour
         //this game manager script reads pending midi events list and
         //dispatches requests to the entity spawner accordingly
 
-        midiController.UpdateMidi();
-        midiJobs = midiController.GetAndClearMidiJobs();
+        //midiController.UpdateMidi();
+        //midiJobs = midiController.GetAndClearMidiJobs();
         /*for(int i = 0; i < midiJobs.Count; i++)
         {
             entityController.RequestSpawn(midiJobs[i].on, midiJobs[i].channel, midiJobs[i].note);
         }*/
-        if(midiJobs.Count > 0)
-            entityController.RequestSpawn(midiJobs[0].on, midiJobs[0].channel, midiJobs[0].note);
+        //if(midiJobs.Count > 0)
+        //    entityController.RequestSpawn(midiJobs[0].on, midiJobs[0].channel, midiJobs[0].note);
 
         inputController.UpdateInputs();
 
@@ -85,6 +88,8 @@ public class GameManagerScript : MonoBehaviour
             playerController.ButtonWasReleased();
         }
         entityController.UpdateEntities();
+        byte b = entitySpawnLoader.SpawnNext();
+        entityController.RequestSpawnByte(b);
         int dc = entityController.GetDeadCount();
         uiController.ScoreAdd(dc);
         playerController.UpdatePlayer();
