@@ -17,6 +17,7 @@ public class GameManagerScript : MonoBehaviour
     private MotionBluWithInstance motionBlurController;
     //private MidiController midiController;
     private EntitySpawnLoader entitySpawnLoader;
+    private ComboCounter comboCounter;
 
     public float delaySecondsBeforeFirstUpdate = 1.0f;
     private float awakeTime;
@@ -38,6 +39,7 @@ public class GameManagerScript : MonoBehaviour
         motionBlurController = FindObjectOfType<MotionBluWithInstance>();
         //midiController = FindObjectOfType<MidiController>();
         entitySpawnLoader = FindObjectOfType<EntitySpawnLoader>();
+        comboCounter = FindObjectOfType<ComboCounter>();
 
         //instantiate components
         environmentController.InitMaterials();
@@ -49,7 +51,7 @@ public class GameManagerScript : MonoBehaviour
         //midiController.InitMidi();
         playerController.InitPlayer();
         motionBlurController.InitMotionBlur(Application.targetFrameRate);
-
+        comboCounter.Init();
 
     }
     void Start()
@@ -92,7 +94,11 @@ public class GameManagerScript : MonoBehaviour
         entityController.RequestSpawnByte(b);
         int dc = entityController.GetDeadCount();
         uiController.ScoreAdd(dc);
-        playerController.UpdatePlayer();
+        bool _ascending;
+        bool _descending;
+        bool _static;
+        playerController.UpdatePlayer(out _ascending, out _descending, out _static);
+        comboCounter._Update(dc, _ascending, _descending, _static);
         motionBlurController.UpdateMotionBlur();
     }
 }

@@ -32,8 +32,8 @@ public class EntityController : MonoBehaviour
 
     private float delta;
 
-    int sequenceCounter;
-    bool sequenceDataLoaded;
+//    int sequenceCounter;
+//    bool sequenceDataLoaded;
 
     private List<float> timestamps;
     private List<LevelReader.Reader.NextEvent> nextevents;
@@ -42,8 +42,8 @@ public class EntityController : MonoBehaviour
     {
         //reader = new LevelReader.Reader();
         //LevelReader.Lo
-        sequenceCounter = 0;
-        sequenceDataLoaded = false;
+//        sequenceCounter = 0;
+//        sequenceDataLoaded = false;
         //levels = new LevelReader();
         //timestamps = new List<float>();
         //nextevents = new List<LevelReader.KeyEvents.NextEvent>();

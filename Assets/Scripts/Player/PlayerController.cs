@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private List<AudioClip> wizzFX = new List<AudioClip>();
     private AudioSource audioSourceFX;
     private Random random = new Random();
-    bool firstpress = true;
+
     public void InitPlayer()
     {
 
@@ -58,11 +58,6 @@ public class PlayerController : MonoBehaviour
 
     public void ButtonWasPressed()
     {
-        if(firstpress)
-        {
-            Debug.Log("first press time: " + Time.unscaledTime.ToString());
-            firstpress = false;
-        }
         PlaySound();
         swingState.SetState(SwingState.State.ASCENDING);
     }
@@ -76,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void UpdatePlayer()
+    public void UpdatePlayer(out bool _ascending, out bool _descending, out bool _static)
     {
         if(swingState.GetState() != SwingState.State.STATIC)
         {
@@ -89,7 +84,10 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
+                    //the player object has reached the top this frame
                     swingState.SetState(SwingState.State.STATIC);
+
+                    //record a hit or miss
                 }
             }
             else if (swingState.GetState() == SwingState.State.DESCENDING)
@@ -110,6 +108,10 @@ public class PlayerController : MonoBehaviour
             else if (posY < posDown)
                 PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, posDown, PlayerObject.transform.position.z);
         }
+        //return these values for use in the combo meter script
+        _ascending = swingState.GetState() == SwingState.State.ASCENDING;
+        _descending = swingState.GetState() == SwingState.State.DESCENDING;
+        _static = swingState.GetState() == SwingState.State.STATIC;
     }
 
     public class SwingState
