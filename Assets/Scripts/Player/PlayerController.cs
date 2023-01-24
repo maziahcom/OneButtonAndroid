@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     private List<AudioClip> wizzFX = new List<AudioClip>();
     private AudioSource audioSourceFX;
     private Random random = new Random();
+    private float powerupExtraSpeed;
+    private int powerLevel;
+    private const float powerupMultiplyer = 10.0f;
 
     public void InitPlayer()
     {
@@ -68,7 +71,10 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
+    public void SetPowerLevel(int level)
+    {
+        powerLevel = level;
+    }
 
 
     public void UpdatePlayer(out bool _ascending, out bool _descending, out bool _static)
@@ -76,11 +82,12 @@ public class PlayerController : MonoBehaviour
         if(swingState.GetState() != SwingState.State.STATIC)
         {
             posY = PlayerObject.transform.position.y;
+            powerupExtraSpeed = powerLevel * powerupMultiplyer;
             if (swingState.GetState() == SwingState.State.ASCENDING)
             {
                 if (posY < posUp)
                 {
-                    PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, PlayerObject.transform.position.y + (Time.deltaTime * rotationSpeed), PlayerObject.transform.position.z);
+                    PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, PlayerObject.transform.position.y + (Time.deltaTime * (rotationSpeed + powerupExtraSpeed)), PlayerObject.transform.position.z);
                 }
                 else
                 {
@@ -94,7 +101,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (posY > posDown)
                 {
-                    PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, PlayerObject.transform.position.y + (Time.deltaTime * rotationSpeed * -1), PlayerObject.transform.position.z);
+                    PlayerObject.transform.position = new Vector3(PlayerObject.transform.position.x, PlayerObject.transform.position.y + (Time.deltaTime * (rotationSpeed + powerupExtraSpeed) * -1), PlayerObject.transform.position.z);
                 }
                 else
                 {

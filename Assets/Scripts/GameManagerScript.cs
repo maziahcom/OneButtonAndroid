@@ -98,7 +98,9 @@ public class GameManagerScript : MonoBehaviour
         bool _descending;
         bool _static;
         playerController.UpdatePlayer(out _ascending, out _descending, out _static);
-        comboCounter._Update(dc, _ascending, _descending, _static);
+        int powerLevel;
+        comboCounter._Update(dc, _ascending, _descending, _static, out powerLevel);
+        playerController.SetPowerLevel(powerLevel);
         motionBlurController.UpdateMotionBlur();
     }
 }
