@@ -5,22 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionFromTitleScreen : MonoBehaviour
 {
-    SceneLoader loader;
+    //Touch tt = new Touch();
+    
+    //SceneLoader loader;
     private bool transitionStarted;
+    //Pub pub;
     private void Awake()
     {
         transitionStarted = false;
-        loader = FindObjectOfType<SceneLoader>();
+        //loader = FindObjectOfType<SceneLoader>();
+        //pub = new Pub();
+        Pub.OnChange += () => KeyPressed();
     }
-    private void Update()
+    private void KeyPressed()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //if (Input.GetKeyDown(KeyCode.Space) || Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (!transitionStarted)
             {
                 transitionStarted = true;
-                SceneLoader.nextScene = SceneLoader.SceneNames.level1;
-                loader.LoadNextScene();
+                SceneLoader.sceneIndex += 1;
+                //SceneLoader.nextScene = SceneLoader.SceneNames.level1;
+                SceneLoader.LoadNextScene();
+                //loader.LoadNextScene();
             }
         }
     }

@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class SceneTransition : MonoBehaviour
 {
-    SceneLoader loader;
+    //SceneLoader loader;
     Camera cam;
     private void Awake()
     {
-        loader = FindObjectOfType<SceneLoader>();
+        //loader = FindObjectOfType<SceneLoader>();
         cam = FindObjectOfType<Camera>(Camera.main);
         StartCoroutine(Countdown());
     }
     private IEnumerator Countdown()
     {
         yield return new WaitForSeconds(6.5f);
-        SceneLoader.nextScene = SceneLoader.SceneNames.titleScreen;
-        loader.LoadNextScene();
+        //SceneLoader.nextScene = SceneLoader.SceneNames.titleScreen;
+        //loader.LoadNextScene();
+        SceneLoader.sceneIndex += 1;
+        SceneLoader.LoadNextScene();
     }
 
 }

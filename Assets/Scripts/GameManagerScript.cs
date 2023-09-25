@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(InputController))]
@@ -22,9 +23,13 @@ public class GameManagerScript : MonoBehaviour
     public float delaySecondsBeforeFirstUpdate = 1.0f;
     private float awakeTime;
     //private List<MidiController.MidiJob> midiJobs;
-    
+
+    //Pub pub;
+
     void Awake()
     {
+       // pub = new Pub();
+
         awakeTime = Time.unscaledTime;
         //remove this later for final build (it can be set ealier in the scene loader)
         Application.targetFrameRate = 120;//Screen.currentResolution.refreshRate;
@@ -104,3 +109,4 @@ public class GameManagerScript : MonoBehaviour
         motionBlurController.UpdateMotionBlur();
     }
 }
+

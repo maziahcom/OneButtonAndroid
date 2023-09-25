@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
@@ -16,12 +18,23 @@ public class SceneLoader : MonoBehaviour
         win,
         lose
     }
+    public static int sceneIndex;
+    public static List<string> sceneNames = new List<string>();
 
     public static SceneNames nextScene = SceneNames.preTitle2;
     private void Awake()
     {
         //Set target framerate according to refresh rate of player's screen
         //Application.targetFrameRate = 30;//Screen.currentResolution.refreshRate;
+        sceneIndex = 0;
+        sceneNames.Clear();
+        sceneNames.Add("preTitle2");
+        sceneNames.Add("titleScreen");
+        sceneNames.Add("level1");
+        sceneNames.Add("level2");
+        sceneNames.Add("level3");
+        sceneNames.Add("win");
+        sceneNames.Add("lose");
     }
     void Start()
     {   //Scene loader has to be always available (across scenes)
@@ -38,9 +51,10 @@ public class SceneLoader : MonoBehaviour
         LoadNextScene();
     }
 
-    public void LoadNextScene()
+    public static void LoadNextScene()
     {
-        StartCoroutine(LoadYourAsyncScene());
+        //StartCoroutine(LoadYourAsyncScene());
+        SceneManager.LoadScene(sceneNames.ElementAt(sceneIndex));
     }
 
     IEnumerator LoadYourAsyncScene()

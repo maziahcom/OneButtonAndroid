@@ -6,11 +6,13 @@ public class InputController : MonoBehaviour
 {
     private bool space_pressed_thisframe;
     private bool space_released_thisframe;
+    private Touch touchStruct;
 
     public void InitInputs()
     {
         space_pressed_thisframe = false;
         space_released_thisframe = false;
+        touchStruct = new Touch();
     }
     public bool GetSpacePressedThisFrame()
     {
@@ -24,12 +26,37 @@ public class InputController : MonoBehaviour
     public void UpdateInputs()
     {
         space_pressed_thisframe = false;
-        space_released_thisframe= false;
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick1Button3))
+        space_released_thisframe = false;
+        //
+        //Handle mobile touch input first
+        //
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            touchStruct = Input.GetTouch(i);
+            if (touchStruct.phase == TouchPhase.Began)
+            {
+                space_pressed_thisframe = true;
+                return;
+            }
+            if (touchStruct.phase == TouchPhase.Ended)
+            {
+                space_released_thisframe = true;
+                return;
+            }
+        }
+        //
+        //Handle keyboard input
+        //
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             space_pressed_thisframe = true;
-        else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Joystick1Button0) || Input.GetKeyUp(KeyCode.Joystick1Button1) || Input.GetKeyUp(KeyCode.Joystick1Button2) || Input.GetKeyUp(KeyCode.Joystick1Button3))
+            return;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
             space_released_thisframe = true;
-
+            return;
+        }
 
     }
 }

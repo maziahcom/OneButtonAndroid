@@ -16,16 +16,18 @@ public class DummyResourceLoaderScript : MonoBehaviour
         
     }
 
-    SceneLoader loader;
+    //SceneLoader loader;
     private void Awake()
     {
-        loader = FindObjectOfType<SceneLoader>();
+        //loader = FindObjectOfType<SceneLoader>();
         StartCoroutine(Countdown());
     }
     private IEnumerator Countdown()
     {
         yield return new WaitForSeconds(0.2f);
-        SceneLoader.nextScene = SceneLoader.SceneNames.preTitle2;
-        loader.LoadNextScene();
+        //SceneLoader.nextScene = SceneLoader.SceneNames.preTitle2;
+        //loader.LoadNextScene();
+        SceneLoader.sceneIndex += 1;
+        SceneLoader.LoadNextScene();
     }
 }
